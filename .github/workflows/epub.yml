@@ -1,0 +1,39 @@
+name: EPUB
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and validate EPUB
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes epubcheck imagemagick libxml2-utils pandoc unzip
+          npm install --global markdownlint-cli@0.45.0
+      - name: Build EPUB
+        run: ./scripts/build-epub.sh
+      - name: Upload EPUB artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: zuurdesembrood-mastergids
+          path: docs/*.epub
+          if-no-files-found: error
+
+  links:
+    name: Check external links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - name: Check external links
+        run: ./scripts/check-links.sh

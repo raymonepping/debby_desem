@@ -1,0 +1,91 @@
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  font-family: serif;
+  line-height: 1.55;
+  margin: 5%;
+  orphans: 2;
+  widows: 2;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  break-after: avoid;
+  hyphens: none;
+  line-height: 1.2;
+  page-break-after: avoid;
+}
+
+h2 {
+  margin-top: 1.5em;
+}
+
+p,
+li {
+  hyphens: auto;
+}
+
+a {
+  overflow-wrap: anywhere;
+}
+
+blockquote {
+  border-left: 0.25em solid #76916f;
+  margin: 1em 0;
+  padding: 0.1em 0 0.1em 1em;
+}
+
+table {
+  border-collapse: collapse;
+  font-size: 0.85em;
+  margin: 1em 0;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #888;
+  padding: 0.35em;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background: rgba(118, 145, 111, 0.18);
+}
+
+tr {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.keep-together {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+img,
+svg {
+  height: auto;
+  max-width: 100%;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #aaa;
+  margin: 1.5em 0;
+}
+
+code {
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-color-scheme: dark) {
+  th {
+    background: rgba(180, 205, 173, 0.18);
+  }
+}

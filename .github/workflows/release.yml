@@ -16,14 +16,27 @@ jobs:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4.3.1
         with:
           fetch-depth: 0
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes epubcheck imagemagick libxml2-utils pandoc unzip
+          npm install --global markdownlint-cli@0.45.0
+      - name: Check release version
+        run: ./scripts/check-version.sh "$(find docs -name '*-v*.md' -print -quit)" "${GITHUB_REF_NAME}"
+      - name: Build and validate EPUB
+        run: ./scripts/build-epub.sh
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          epub_files=(docs/*.epub)
+          epub_file="${epub_files[0]}"
+
           if gh release view "${GITHUB_REF_NAME}" > /dev/null 2>&1; then
-            echo "Release ${GITHUB_REF_NAME} already exists — skipping."
+            gh release upload "${GITHUB_REF_NAME}" "${epub_file}" --clobber
           else
             gh release create "${GITHUB_REF_NAME}" \
               --title "${GITHUB_REF_NAME}" \
-              --generate-notes
+              --generate-notes \
+              "${epub_file}"
           fi
